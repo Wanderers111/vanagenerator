@@ -1,14 +1,14 @@
 import numpy as np
 import random
 import re
-import pickle
+import os
 from rdkit import Chem
 import sys
-import time
+from rdkit.Chem import Draw
 import torch
 from torch.utils.data import Dataset
 
-from utils import Variable
+from utils.utils import Variable
 
 class Vocabulary(object):
     """A class for handling encoding/decoding from SMILES to an array of indices"""
@@ -304,10 +304,27 @@ def construct_vocabulary(smiles_list):
                 [add_chars.add(unit) for unit in chars]
 
     print("Number of characters: {}".format(len(add_chars)))
-    with open('data/Voc', 'w') as f:
+    with open('../data/Voc', 'w') as f:
         for char in add_chars:
             f.write(char + "\n")
     return add_chars
+
+def extract_vanadium_data(sdf_file):
+    try:
+        sdfs = Chem.SDMolSupplier(sdf_file)
+        mols = [sdf for sdf in sdfs][0]
+        return mols
+    except Exception:
+        print(sdf_file)
+        print('Invalid Input for Rdkit')
+
+def draw_molecule(idx, mol):
+    if not os.path.exists('./imgs'):
+        os.makedirs('./imgs')
+    img = Draw.MolToImage(mol)
+    img_path = './imgs/%d.png'%(idx)
+    img.save(img_path)
+
 
 if __name__ == "__main__":
     smiles_file = sys.argv[1]

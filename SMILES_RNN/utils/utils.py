@@ -43,11 +43,3 @@ def unique(arr):
         return torch.LongTensor(np.sort(idxs)).cuda()
     return torch.LongTensor(np.sort(idxs))
 
-def extract_vanadium_data(sdf_file):
-    try:
-        sdfs = Chem.SDMolSupplier(sdf_file)
-        mols = [sdf for sdf in sdfs]
-    except Exception:
-        print(sdf_file)
-        print('Invalid Input for Rdkit')
-        return mols

@@ -7,7 +7,7 @@ from rdkit import Chem
 from rdkit import rdBase
 from tqdm import tqdm
 
-from data_structs import MolData, Vocabulary
+from utils.data_structs import MolData, Vocabulary
 from model import RNN
 from utils import  decrease_learning_rate
 rdBase.DisableLog('rdApp.error')
