@@ -1,5 +1,5 @@
 import tensorflow as tf
-from utils import *
+from nevae.utils import *
 
 def input_layer(c_mat, adj,weight, feature, k,n,d,activation = None, batch_norm = False, istrain = False, scope = None):
     

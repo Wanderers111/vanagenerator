@@ -10,6 +10,7 @@ from rdkit.Chem import AllChem
 from rdkit.Chem import Draw, Lipinski
 from rdkit.Chem import Descriptors
 #import sascorer
+import json
 
 def getValenceDict(filename):
     f = open(filename)
@@ -44,10 +45,10 @@ def guess_correct_molecules(readfile, writefile, n, multi):
     #'''
     try:
      if not nx.is_connected(G):
-           print "Not connected"
+           print("Not connected")
            return False
     except:
-        print "Null graph"
+        print("Null graph")
         return False
     #'''
     nodes = len(G.nodes())
@@ -155,6 +156,5 @@ if __name__=="__main__":
 
     f = open(sys.argv[1])
     for line in f:
-
-            m1 = Chem.MolFromSmiles(line.strip())
-            drawchem([m1])
+        m1 = Chem.MolFromSmiles(line.strip())
+        drawchem([m1])

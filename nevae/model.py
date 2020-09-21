@@ -1,6 +1,6 @@
-from utils import *
-from config import SAVE_DIR, VAEGConfig
-from cell import VAEGCell
+from nevae.utils import *
+from nevae.config import SAVE_DIR, VAEGConfig
+from nevae.cell import VAEGCell
 from math import log
 import tensorflow as tf
 import numpy as np
@@ -11,7 +11,7 @@ import time
 import networkx as nx
 from collections import defaultdict
 from operator import itemgetter
-from checkvalidity import *
+from nevae.checkvalidity import *
 
 logging.basicConfig(format="[%(asctime)s] %(message)s", datefmt="%m%d %H:%M:%S")
 logger = logging.getLogger(__name__)
@@ -96,7 +96,7 @@ class VAEG(VAEGConfig):
             '''
                 Kullback leibler divergence for two gaussian distributions
             '''
-            print sigma_1.shape, sigma_2.shape
+            print(sigma_1.shape, sigma_2.shape)
             with tf.variable_scope("kl_gaussisan"):
                 temp_stack = []
                 for i in range(self.n):
@@ -384,7 +384,8 @@ class VAEG(VAEGConfig):
         return (pred_label, valency_arr)
         
 
-    def sample_graph(self, hparams,placeholders, adj, features, features1, weights, weight_bins, edges, k=0, outdir=None):
+    def sample_graph(self, hparams, placeholders, adj, features, features1, weights, weight_bins, edges,  eps, k=0, outdir=None,
+                    ):
         '''
         Args :
             num - int
@@ -399,12 +400,12 @@ class VAEG(VAEGConfig):
         feed_dict = construct_feed_dict(hparams.learning_rate, hparams.dropout_rate, self.k, self.n, self.d, hparams.decay_rate, placeholders)
         feed_dict.update({self.adj: adj[0]})
 	feed_dict.update({self.features:features[0] })
-        #feed_dict.update({self.weight_bin: weight_bins[0]})
+        feed_dict.update({self.weight_bin: weight_bins[0]})
         feed_dict.update({self.weight: weights[0]})
         feed_dict.update({self.input_data: np.zeros([self.k,self.n,self.d])})
         feed_dict.update({self.eps: eps})
         feed_dict.update({self.features1: features1[0]})
-        feed_dict.update({self.weight_bin: [weight_bin]})
+        #feed_dict.update({self.weight_bin: [weight_bin]})
         feed_dict.update({self.edges:[edges] })
 
         prob, ll, z_encoded, kl, sample_mu, sample_sigma, loss, w_edge, labels = self.sess.run([self.prob, self.ll, self.z_encoded, self.kl, self.enc_mu, self.enc_sigma, self.cost, self.w_edge, self.label],feed_dict=feed_dict )

@@ -1,7 +1,7 @@
-from layer import *
+from nevae.layer import *
 import tensorflow as tf
 import numpy as np
-from utils import *
+from nevae.utils import *
 from math import exp
 
 class VAEGCell(object):

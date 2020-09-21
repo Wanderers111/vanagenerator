@@ -9,6 +9,7 @@ from rdkit.Chem import Draw
 from rdkit.Chem import AllChem
 from rdkit.Chem import Draw, Lipinski
 from rdkit.Chem import Descriptors
+import json
 #import sascorer
 
 def getValenceDict(filename):
@@ -44,10 +45,10 @@ def guess_correct_molecules(readfile, writefile, n, multi):
     #'''
     try:
      if not nx.is_connected(G):
-           print "Not connected"
+           print("Not connected")
            return False
     except:
-        print "Null graph"
+        print("Null graph")
         return False
     #'''
     nodes = len(G.nodes())
@@ -139,11 +140,12 @@ def drawchem(mols):
         count += 1 
 
 def calculate_property(m):
-    SA_score = -sascorer.calculateScore(m)
+    # SA_score = -sascorer.calculateScore(m)
     MW = Descriptors.MolWt(m)
     RB = Lipinski.NumRotatableBonds(m)
     logp = Descriptors.MolLogP(m)
-    return (SA_score, MW, RB, logp)
+    #return (SA_score, MW, RB, logp)
+    return (MW, RB, logp)
 
 if __name__=="__main__":
     
@@ -169,12 +171,12 @@ if __name__=="__main__":
                 mols.append((m2, readfile))
                 valid += 1
         else:
-                print "Failed invalid"
+                print("Failed invalid")
                 invalid.append(readfile)
 
     #print smiles, len(smiles)
     with open(sys.argv[5], 'a') as f:
         for smile in smiles:
             f.write(smile+"\n")
-    print "Valid:", valid, "Total:", total, "moltotal:",moltotal, "Perc:", valid/moltotal
+    print("Valid:", valid, "Total:", total, "moltotal:", moltotal, "Perc:", valid / moltotal)
     #drawchem(mols)

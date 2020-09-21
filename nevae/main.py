@@ -1,9 +1,9 @@
-from utils import *
+from nevae.utils import *
 #create_dir, pickle_save, print_vars, load_data, get_shape, proxy
-from config import SAVE_DIR, VAEGConfig
+from nevae.config import SAVE_DIR, VAEGConfig
 from datetime import datetime
-from cell import VAEGCell
-from model import VAEG
+from nevae.cell import VAEGCell
+from nevae.model import VAEG
 
 import tensorflow as tf
 import numpy as np

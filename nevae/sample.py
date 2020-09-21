@@ -1,9 +1,10 @@
-from utils_new import *
+#from utils_new import *
+from nevae.utils import load_data, log_fact
 #create_dir, pickle_save, print_vars, load_data, get_shape, proxy
-from config import SAVE_DIR, VAEGConfig
+from nevae.config import SAVE_DIR, VAEGConfig
 from datetime import datetime
-from cell import VAEGCell
-from model import VAEG
+from nevae.cell import VAEGCell
+from nevae.model import VAEG
 
 import tensorflow as tf
 import numpy as np
@@ -91,7 +92,7 @@ if __name__ == '__main__':
     FLAGS, unparsed = nmt_parser.parse_known_args()
     hparams = create_hparams(FLAGS)
     # loading the data from a file
-    adj, weight, weight_bin, features, edges, neg_edges, features1, smiles = load_data_new(hparams.graph_file, hparams.nodes, 1, 1, hparams.bin_dim)
+    adj, weight, weight_bin, features, edges, neg_edges, features1, smiles = load_data(hparams.graph_file, hparams.nodes, 1, 1, hparams.bin_dim)
 
     #Test code
     e = max([len(edge) for edge in edges])
@@ -100,6 +101,7 @@ if __name__ == '__main__':
     
     model2 = VAEG(hparams, placeholders, hparams.nodes, n_f, log_fact_k, len(adj))
     model2.restore(hparams.out_dir)
+    i = 0
     while i < 100:
         smiles = []
         smiles_new = model2.sample_graph(hparams,placeholders, adj, features, features1, weight, weight_bin, edges, i)
@@ -107,7 +109,7 @@ if __name__ == '__main__':
             if s!='None':
                 smiles.append(s)
         i += 1
-        print smiles
+        print(smiles)
         with open(hparams.sample_file + "smiles.txt", "a") as f:
             for s in smiles:
                 f.write(s+"\n")

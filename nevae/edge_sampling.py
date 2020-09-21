@@ -68,5 +68,5 @@ if __name__ == '__main__':
     nodes = [4, 1, 5]
     for node in nodes:
         bfs_n, bfs_e = breadth_first_search(adjdict, G.degree(), node)
-        print bfs_e, len(bfs_e)
-    print get_edge_list_BFS(A,2,"max")
+        print(bfs_e, len(bfs_e))
+    print(get_edge_list_BFS(A, 2, "max"))

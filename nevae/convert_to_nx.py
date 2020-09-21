@@ -99,7 +99,7 @@ def do_all(block, validate=False):
     mol1 = Chem.AddHs(mol)
     AllChem.Compute2DCoords(mol1)
     #can_smi = Chem.MolToSmiles(mol1)
-    G = mol_to_nx_new(mol1)
+    G = mol_to_nx(mol1)
     return G
 
 def main():
